@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enter Product — The Curated Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #1a1714;
+      --paper:   #f7f4ef;
+      --warm:    #e8e2d8;
+      --accent:  #c4602a;
+      --muted:   #8a8278;
+      --card-bg: #ffffff;
+      --success: #2a7a5a;
+      --success-bg: #ddeee8;
+      --error-bg: #fde8dc;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 3rem 2rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--warm);
+    }
+
+    .brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand span { color: var(--accent); }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+      padding-bottom: 0.3rem;
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .btn-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1.5px solid var(--warm);
+      background: transparent;
+      padding: 0.5rem 1rem;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-back:hover {
+      border-color: var(--muted);
+      color: var(--ink);
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ── Left panel ── */
+    .form-intro {
+      position: sticky;
+      top: 3rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .form-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .form-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .form-divider {
+      width: 2rem;
+      height: 2px;
+      background: var(--accent);
+      margin: 1.5rem 0;
+    }
+
+    .field-guide {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .field-guide strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── Form card ── */
+    .form-card {
+      background: var(--card-bg);
+      border-radius: 4px;
+      padding: 2.5rem;
+    }
+
+    /* ── Field groups ── */
+    .field-group {
+      margin-bottom: 1.6rem;
+    }
+
+    .field-group:last-of-type {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    label .required-mark {
+      color: var(--accent);
+      margin-left: 0.2rem;
+    }
+
+    label .hint {
+      font-weight: 300;
+      letter-spacing: 0;
+      text-transform: none;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-left: 0.3rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    select {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1.5px solid var(--warm);
+      border-radius: 2px;
+      padding: 0.65rem 0.85rem;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="url"]:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    input[type="text"]::placeholder,
+    input[type="number"]::placeholder,
+    input[type="url"]::placeholder {
+      color: var(--warm);
+    }
+
+    /* Select wrapper for custom arrow */
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    select { padding-right: 2rem; cursor: pointer; }
+
+    /* Two-column row */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ── Submit area ── */
+    .submit-area {
+      margin-top: 2rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--warm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .submit-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .btn-submit {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: white;
+      background: var(--accent);
+      border: none;
+      padding: 0.75rem 1.8rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-submit:hover:not(:disabled) { opacity: 0.85; }
+
+    .btn-submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-label { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Status messages ── */
+    .status-msg {
+      display: none;
+      border-radius: 2px;
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-top: 1.5rem;
+    }
+
+    .status-msg.success {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .status-msg.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--accent);
+    }
+
+    .status-msg .status-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--warm);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .form-intro { position: static; }
+      .field-row { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .header-right { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">The <span>Curated</span> Shop</a>
+  <div class="header-right">
+    <a href="index.html" class="btn-back">← Back to Shop</a>
+    <div class="tagline">Thoughtfully made goods</div>
+  </div>
+</header>
+
+<main>
+  <!-- Left: intro panel -->
+  <aside class="form-intro">
+    <p class="section-label">Product Entry</p>
+    <h1 class="form-title">Add a new product</h1>
+    <div class="form-divider"></div>
+    <p class="form-desc">Fill in the details below to add a new item to the shop. All fields marked with <span style="color:var(--accent)">*</span> are required.</p>
+    <div class="form-divider"></div>
+    <div class="field-guide">
+      <strong>name</strong> — product display name<br>
+      <strong>category</strong> — e.g. Ceramics, Textiles<br>
+      <strong>price</strong> — current selling price<br>
+      <strong>oldPrice</strong> — original price if on sale<br>
+      <strong>badge</strong> — sale or new label<br>
+      <strong>img</strong> — public image URL
+    </div>
+  </aside>
+
+  <!-- Right: form card -->
+  <div class="form-card">
+
+    <div class="field-group">
+      <label for="name">Product Name <span class="required-mark">*</span></label>
+      <input type="text" id="name" name="name" placeholder="e.g. Handthrown Ceramic Bowl" required />
+    </div>
+
+    <div class="field-group">
+      <label for="category">Category <span class="required-mark">*</span></label>
+      <input type="text" id="category" name="category" placeholder="e.g. Ceramics, Textiles, Stationery" required />
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label for="price">Price <span class="required-mark">*</span> <span class="hint">(USD, no $)</span></label>
+        <input type="number" id="price" name="price" placeholder="42.00" min="0" step="0.01" required />
+      </div>
+      <div class="field-group">
+        <label for="oldPrice">Original Price <span class="hint">(leave blank if not on sale)</span></label>
+        <input type="number" id="oldPrice" name="oldPrice" placeholder="58.00" min="0" step="0.01" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="badge">Badge</label>
+      <div class="select-wrap">
+        <select id="badge" name="badge">
+          <option value="">None</option>
+          <option value="new">New</option>
+          <option value="sale">Sale</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="img">Image URL <span class="required-mark">*</span></label>
+      <input type="url" id="img" name="img" placeholder="https://images.unsplash.com/..." required />
+    </div>
+
+    <!-- Status messages -->
+    <div class="status-msg" id="status-msg">
+      <div class="status-title" id="status-title"></div>
+      <div id="status-body"></div>
+    </div>
+
+    <!-- Submit area -->
+    <div class="submit-area">
+      <span class="submit-note">Submitted data goes directly to the Google Sheet.</span>
+      <button class="btn-submit" id="submit-btn" type="button" onclick="submitProduct()">
+        <span class="spinner"></span>
+        <span class="btn-label">Save Product</span>
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<footer>© 2026 The Curated Shop · All rights reserved</footer>
+
+<script>
+  // ─── Paste your Google Apps Script Web App URL here ───
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyhTnD4RXH5mpusICFmuWMv8TM2R7HIjjxQ40srCAnE7gjEQb2x4s-7PCcD2H3roQv95A/exec";
+
+  function showStatus(type, title, body) {
+    const el = document.getElementById('status-msg');
+    el.className = 'status-msg ' + type;
+    document.getElementById('status-title').textContent = title;
+    document.getElementById('status-body').textContent = body;
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideStatus() {
+    const el = document.getElementById('status-msg');
+    el.className = 'status-msg';
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = on;
+    if (on) {
+      btn.classList.add('loading');
+    } else {
+      btn.classList.remove('loading');
+    }
+  }
+
+  async function submitProduct() {
+    hideStatus();
+
+    // Gather values
+    const name     = document.getElementById('name').value.trim();
+    const category = document.getElementById('category').value.trim();
+    const price    = document.getElementById('price').value.trim();
+    const oldPrice = document.getElementById('oldPrice').value.trim();
+    const badge    = document.getElementById('badge').value;
+    const img      = document.getElementById('img').value.trim();
+
+    // Basic validation
+    if (!name || !category || !price || !img) {
+      showStatus('error', 'Missing required fields', 'Please fill in product name, category, price, and image URL before saving.');
+      return;
+    }
+
+    // Build URL params — names match the CSV column headers exactly
+    const params = new URLSearchParams({
+      name,
+      category,
+      price,
+      oldPrice: oldPrice || 'null',
+      badge:    badge    || 'null',
+      img,
+    });
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${WEB_APP_URL}?${params.toString()}`, {
+        method: 'GET',
+        mode: 'no-cors', // Google Apps Script requires no-cors for cross-origin GET
+      });
+
+      // With no-cors, response type is "opaque" — assume success if no network error
+      showStatus(
+        'success',
+        'Product saved!',
+        `"${name}" has been added to the sheet. Redirecting you back to the shop…`
+      );
+
+      // Reset form
+      ['name','category','price','oldPrice','img'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('badge').value = '';
+
+      // Redirect after a short pause so the user can see the confirmation
+      setTimeout(() => { window.location.href = 'index.html'; }, 2200);
+
+    } catch (err) {
+      showStatus(
+        'error',
+        'Submission failed',
+        'Could not reach the Apps Script endpoint. Check the WEB_APP_URL is correct and the script is deployed as a web app accessible to anyone.'
+      );
+      console.error('Submission error:', err);
+    } finally {
+      setLoading(false);
+    }
+  }
+</script>
+
+</body>
+</html>
